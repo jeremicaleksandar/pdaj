@@ -6,7 +6,7 @@ from scipy.integrate import odeint
 
 g = 9.81
 
-//https://scipython.com/blog/the-double-pendulum/
+#https://scipython.com/blog/the-double-pendulum/
 
 def deriv(y, t, L1, L2, m1, m2):
     """Return the first derivatives of y = theta1, z1, theta2, z2."""
