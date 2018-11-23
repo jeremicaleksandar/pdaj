@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 from scipy.integrate import odeint
+import csv
 #import matplotlib.pyplot as plt
 #from matplotlib.patches import Circle
 
@@ -54,22 +55,28 @@ def solve(L1, L2, m1, m2, t, y0):
 	
 	return theta1, theta2, x1, y1, x2, y2
 
-def main():
+def do_everything(L1, L2, m1, m2, tmax, dt):
 
 	# Pendulum rod lengths (m), bob masses (kg).
-	L1, L2 = 1, 1
-	m1, m2 = 1, 1
+	#L1, L2 = 1, 1
+	#m1, m2 = 1, 1
 	# The gravitational acceleration (m.s-2).
 
 
 	# Maximum time, time point spacings and the time grid (all in s).
-	tmax, dt = 30, 0.01
+	#tmax, dt = 30, 0.01
 	t = np.arange(0, tmax+dt, dt)
 	# Initial conditions: theta1, dtheta1/dt, theta2, dtheta2/dt.
 	y0 = np.array([3*np.pi/7, 0, 3*np.pi/4, 0])
 
 
 	theta1, theta2, x1, y1, x2, y2 = solve(L1, L2, m1, m2, t, y0)
+
+	with open('double-pendulum.csv', 'wb') as csvfile:
+		spamwriter = csv.writer(csvfile, delimiter=',',
+								quotechar='|', quoting=csv.QUOTE_MINIMAL)
+		for i in range(len(theta1)):
+			spamwriter.writerow([theta1[i], theta2[i], x1[i], y1[i], x2[i], y2[i]]);
 
 	from pprint import pprint
 	pprint([theta1, theta2])
@@ -90,8 +97,6 @@ def main():
 	plt.legend()
 	plt.savefig("seq.png")
 
-if __name__ == "__main__":
-	main()
 	
 
 
