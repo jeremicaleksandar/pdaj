@@ -60,7 +60,7 @@ def simulate_pendulum(theta_resolution, tmax, dt):
 
                 theta1, theta2, x1, y1, x2, y2 = solve(L1, L2, m1, m2, tmax, dt, y0)
                 #print theta1_init, theta2_init, theta1[-1], theta2[-1]
-                spamwriter.writerow([theta1_init, theta2_init, theta1, theta2, x1, y1, x2, y2]);
+                spamwriter.writerow([theta1_init, theta2_init, theta1[-1], theta2[-1], x1[-1], y1[-1], x2[-1], y2[-1]]);
 
 
 def do_the_thing(theta_resolution, tmax, dt):

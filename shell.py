@@ -2,8 +2,8 @@ import argparse
 import logging
 import os
 
-from defaults import __version__, DEFAULT_L1, DEFAULT_L2, DEFAULT_M1, DEFAULT_M2, DEFAULT_TMAX, DEFAULT_DT
-from main import do_everything
+from defaults import __version__, DEFAULT_THETA_RES, DEFAULT_TMAX, DEFAULT_DT
+from double import do_the_thing
 
 
 def main():
@@ -18,6 +18,11 @@ def main():
     #    help="Data file describing the parametric model, please see "\
     #         "'examples/data-files/barbero-viscoelastic.yaml' for an example"
     #)
+    parser.add_argument(
+        '--theta_resolution',
+        type = int,
+        default=DEFAULT_THETA_RES
+    )
     parser.add_argument(
         '--tmax',
         type = int,
