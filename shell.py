@@ -19,26 +19,6 @@ def main():
     #         "'examples/data-files/barbero-viscoelastic.yaml' for an example"
     #)
     parser.add_argument(
-        '--L1',
-        type = int,
-        default=DEFAULT_L1
-    )
-    parser.add_argument(
-        '--L2',
-        type = int,
-        default=DEFAULT_L2
-    )
-    parser.add_argument(
-        '--m1',
-        type = int,
-        default=DEFAULT_M1
-    )
-    parser.add_argument(
-        '--m2',
-        type = int,
-        default=DEFAULT_M2
-    )
-    parser.add_argument(
         '--tmax',
         type = int,
         default=DEFAULT_TMAX
@@ -89,11 +69,8 @@ def main():
     #if not args.results_file:
     #    args.results_file = os.path.splitext(args.data_file)[0] + '.hdf5'
 
-    do_everything(
-        L1=args.L1,
-        L2=args.L2,
-        m1=args.m1,
-        m2=args.m2,
+    do_the_thing(
+        theta_resolution=args.theta_resolution,
         tmax=args.tmax,
         dt=args.dt
     )

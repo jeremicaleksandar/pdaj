@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 from scipy.integrate import odeint
+import csv
 
 
 # The gravitational acceleration (m.s-2).
@@ -36,30 +37,31 @@ def solve(L1, L2, m1, m2, tmax, dt, y0):
 
     return theta1, theta2, x1, y1, x2, y2
 
-def simulate_pendulum(theta_resolution):
+def simulate_pendulum(theta_resolution, tmax, dt):
     # Pendulum rod lengths (m), bob masses (kg).
     L1, L2 = 1.0, 1.0
     m1, m2 = 1.0, 1.0
 
     # Maximum time, time point spacings (all in s).
-    tmax, dt = 30.0, 0.01
+    #tmax, dt = 30.0, 0.01
 
-    for theta1_init in np.linspace(0, 2*np.pi, theta_resolution):
-        for theta2_init in np.linspace(0, 2*np.pi, theta_resolution):
-            # Initial conditions: theta1, dtheta1/dt, theta2, dtheta2/dt.
-            y0 = np.array([
-                theta1_init,
-                0.0,
-                theta2_init,
-                0.0
-            ])
+    with open('double-pendulum.csv', 'wb') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=',',
+                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        for theta1_init in np.linspace(0, 2*np.pi, theta_resolution):
+            for theta2_init in np.linspace(0, 2*np.pi, theta_resolution):
+                # Initial conditions: theta1, dtheta1/dt, theta2, dtheta2/dt.
+                y0 = np.array([
+                    theta1_init,
+                    0.0,
+                    theta2_init,
+                    0.0
+                ])
 
-            theta1, theta2, x1, y1, x2, y2 = solve(L1, L2, m1, m2, tmax, dt, y0)
+                theta1, theta2, x1, y1, x2, y2 = solve(L1, L2, m1, m2, tmax, dt, y0)
+                #print theta1_init, theta2_init, theta1[-1], theta2[-1]
+                spamwriter.writerow([theta1_init, theta2_init, theta1, theta2, x1, y1, x2, y2]);
 
-            print theta1_init, theta2_init, theta1[-1], theta2[-1]
 
-def main():
-    simulate_pendulum(10)
-
-if __name__ == "__main__":
-    main()
+def do_the_thing(theta_resolution, tmax, dt):
+    simulate_pendulum(theta_resolution, tmax, dt)
