@@ -2,7 +2,7 @@ import argparse
 import logging
 import os
 
-from defaults import __version__, DEFAULT_THETA_RES, DEFAULT_TMAX, DEFAULT_DT
+from defaults import __version__, DEFAULT_THETA_RES, DEFAULT_TMAX, DEFAULT_DT, DEFAULT_FILENAME
 from double import do_the_thing
 
 
@@ -19,6 +19,7 @@ def main():
     #         "'examples/data-files/barbero-viscoelastic.yaml' for an example"
     #)
     parser.add_argument(
+		'-r',
         '--theta_resolution',
         type = int,
         default=DEFAULT_THETA_RES
@@ -32,6 +33,11 @@ def main():
         '--dt',
         type = int,
         default=DEFAULT_DT
+    )
+    parser.add_argument(
+        '-o',
+		'--output_filename',
+        default=DEFAULT_FILENAME
     )
 
 
@@ -77,7 +83,8 @@ def main():
     do_the_thing(
         theta_resolution=args.theta_resolution,
         tmax=args.tmax,
-        dt=args.dt
+        dt=args.dt,
+		filename=args.output_filename
     )
 
 if __name__ == '__main__':

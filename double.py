@@ -37,7 +37,7 @@ def solve(L1, L2, m1, m2, tmax, dt, y0):
 
     return theta1, theta2, x1, y1, x2, y2
 
-def simulate_pendulum(theta_resolution, tmax, dt):
+def simulate_pendulum(theta_resolution, tmax, dt, filename):
     # Pendulum rod lengths (m), bob masses (kg).
     L1, L2 = 1.0, 1.0
     m1, m2 = 1.0, 1.0
@@ -45,8 +45,8 @@ def simulate_pendulum(theta_resolution, tmax, dt):
     # Maximum time, time point spacings (all in s).
     #tmax, dt = 30.0, 0.01
 
-    with open('double-pendulum.csv', 'wb') as csvfile:
-        spamwriter = csv.writer(csvfile, delimiter=',',
+    with open(filename, 'wb') as csvfile:
+        csvwriter = csv.writer(csvfile, delimiter=',',
                                 quotechar='|', quoting=csv.QUOTE_MINIMAL)
         for theta1_init in np.linspace(0, 2*np.pi, theta_resolution):
             for theta2_init in np.linspace(0, 2*np.pi, theta_resolution):
@@ -60,8 +60,8 @@ def simulate_pendulum(theta_resolution, tmax, dt):
 
                 theta1, theta2, x1, y1, x2, y2 = solve(L1, L2, m1, m2, tmax, dt, y0)
                 #print theta1_init, theta2_init, theta1[-1], theta2[-1]
-                spamwriter.writerow([theta1_init, theta2_init, theta1[-1], theta2[-1], x1[-1], y1[-1], x2[-1], y2[-1]]);
+                csvwriter.writerow([theta1_init, theta2_init, theta1[-1], theta2[-1], x1[-1], y1[-1], x2[-1], y2[-1]]);
 
 
-def do_the_thing(theta_resolution, tmax, dt):
-    simulate_pendulum(theta_resolution, tmax, dt)
+def do_the_thing(theta_resolution, tmax, dt, filename):
+    simulate_pendulum(theta_resolution, tmax, dt, filename)
