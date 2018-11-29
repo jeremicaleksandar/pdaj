@@ -9,15 +9,8 @@ from double import do_the_thing
 def main():
     # Setup command line option parser
     parser = argparse.ArgumentParser(
-        description='Parametric modeling of buckling and free vibration in '\
-                    'prismatic shell structures, performed by solving the '\
-                    'eigenvalue problem in HCFSM.'
+        description='Double pendulum simulation.'
     )
-    #parser.add_argument(
-    #    'data_file',
-    #    help="Data file describing the parametric model, please see "\
-    #         "'examples/data-files/barbero-viscoelastic.yaml' for an example"
-    #)
     parser.add_argument(
 		'-r',
         '--theta_resolution',
@@ -27,27 +20,34 @@ def main():
     parser.add_argument(
         '--tmax',
         type = int,
-        default=DEFAULT_TMAX
+        default=DEFAULT_TMAX,
+		help='end time'
     )
     parser.add_argument(
         '--dt',
         type = int,
-        default=DEFAULT_DT
+        default=DEFAULT_DT,
+		help='delta time'
     )
     parser.add_argument(
         '-o',
 		'--output_filename',
-        default=DEFAULT_FILENAME
+        default=DEFAULT_FILENAME,
+		help='output csv file filename'
     )
-
-
-    '''
     parser.add_argument(
-        '-d',
-        '--purge-integral-db-cache',
+        '-g',
+        '--graph',
         action='store_true',
-        help='Purge the integral db cache, forcing it to redownload'
+        help='Draw the graph too.'
     )
+    parser.add_argument(
+        '-p',
+        '--parallel',
+        action='store_true',
+        help='Use multiprocessing to parallelize the code.'
+    )
+    '''
     parser.add_argument(
         '-q',
         '--quiet',
@@ -84,7 +84,9 @@ def main():
         theta_resolution=args.theta_resolution,
         tmax=args.tmax,
         dt=args.dt,
-		filename=args.output_filename
+		filename=args.output_filename,
+		graph=args.graph,
+		parallel=args.parallel
     )
 
 if __name__ == '__main__':
