@@ -48,7 +48,7 @@ def mappableSolve(args):
 	])
     #vracam i thete da znam za cega su ovi rezultati (da ih posle mogu
     #pisati u fajl)
-	return (theta1_init, theta2_init, solve(L1, L2, m1, m2, tmax, dt, y0))
+	return theta1_init, theta2_init, solve(L1, L2, m1, m2, tmax, dt, y0)
                 
 
 
@@ -65,24 +65,23 @@ def simulate_pendulum(theta_resolution, tmax, dt, filename, parallel):
 
     import itertools
     t1t2_inits = itertools.product(theta1_inits, theta2_inits)
-    params = [[L1, L2, m1, m2, tmax, dt, t1t2_i[0], t1t2_i[1]] for t1t2_i in t1t2_inits]
+    params = ((L1, L2, m1, m2, tmax, dt, t1t2_i[0], t1t2_i[1]) for t1t2_i in t1t2_inits)
 	
     if parallel:
         from multiprocessing import Pool
-        pool = Pool(processes=4)
-        solutions = pool.map(mappableSolve, params)
+        pool = Pool()
+        solutions = pool.imap(mappableSolve, params)
     else:
-        solutions = map(mappableSolve, params)
+        solutions = itertools.imap(mappableSolve, params)
 
     with open(filename, 'wb') as csvfile:
-        csvwriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        csvwriter.writerow(["theta1_init", "theta2_init", "theta1_last", "theta2_last", "x1_last", "y1_last", "x2_last", "y2_last"])      
-        for t1i, t2i, results in solutions:
-           theta1, theta2, x1, y1, x2, y2 = results #to je ono sto je solve izracunao
-           csvwriter.writerow([t1i, t2i, theta1[-1], theta2[-1], x1[-1], y1[-1], x2[-1], y2[-1]])
+	    csvwriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+	    csvwriter.writerow(["theta1_init", "theta2_init", "theta1_last", "theta2_last", "x1_last", "y1_last", "x2_last", "y2_last"])      
+	    for t1i, t2i, results in solutions:
+	       theta1, theta2, x1, y1, x2, y2 = results #to je ono sto je solve izracunao
+	       csvwriter.writerow([t1i, t2i, theta1[-1], theta2[-1], x1[-1], y1[-1], x2[-1], y2[-1]])
 
 def plot_the_thing(filename):
-	
 	
 	rows = []
 	with open(filename, 'rb') as csvfile:
